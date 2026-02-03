@@ -2,17 +2,44 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 
+st.markdown("""
+<style>
+    .block-container {
+        padding-top: 0.5rem;
+        padding-bottom: 0rem;
+    }
+    h1 {
+        margin: 2.0rem 0 !important;
+        padding: 0 !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 # Load data
 df = pd.read_csv('superstore.csv', encoding='latin1')
+
+df['Order Date'] = pd.to_datetime(df['Order Date'], format='%m/%d/%Y')
 
 st.set_page_config(page_title="Group Activity", layout="wide", initial_sidebar_state="collapsed")
 st.markdown("<h1 style='text-align: center;'>Group Activity - Superstore</h1>", unsafe_allow_html=True)
 
-# Hnhan
 col1, col2 = st.columns(2)
 
 with col1:
-    profit_by_region = df.groupby('Region')['Profit'].sum().reset_index()
+    # Filter date
+    date_col1, date_col2 = st.columns(2)
+    with date_col1:
+        start_date = st.date_input("**Start date**", value=df['Order Date'].min(), min_value=df['Order Date'].min(), max_value=df['Order Date'].max())
+    
+    with date_col2:
+        end_date = st.date_input("**End date**", value=df['Order Date'].max(), min_value=df['Order Date'].min(), max_value=df['Order Date'].max())
+    
+    start_date = pd.to_datetime(start_date)
+    end_date = pd.to_datetime(end_date)
+    
+    profit_by_date = df[(df['Order Date'] >= start_date) & (df['Order Date'] <= end_date)]
+    
+    profit_by_region = profit_by_date.groupby('Region')['Profit'].sum().reset_index()
     profit_by_region = profit_by_region.sort_values('Profit', ascending=False)
     
     st.write("**Regions:**")
@@ -40,7 +67,7 @@ with col1:
                 y=filtered_profit['Profit'],
                 marker=dict(color=colors),
                 text=filtered_profit['Profit'].round(2),
-                textposition='auto'
+                textposition='outside'
             )
         )
         
@@ -48,8 +75,8 @@ with col1:
             xaxis_title="Region",
             yaxis_title="Profit ($)",
             hovermode='x unified',
-            height=350,
-            margin=dict(l=40, r=40, t=40, b=40)
+            height=400,
+            margin=dict(l=50, r=50, t=30, b=50)
         )
         
         st.plotly_chart(fig, use_container_width=True)

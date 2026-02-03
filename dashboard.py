@@ -3,7 +3,7 @@ import pandas as pd
 import plotly.graph_objects as go
 
 # Load data
-df = pd.read_csv('Sample - Superstore.csv', encoding='latin1')
+df = pd.read_csv('superstore.csv', encoding='latin1')
 
 st.set_page_config(page_title="Group Activity", layout="wide", initial_sidebar_state="collapsed")
 st.markdown("<h1 style='text-align: center;'>Group Activity - Superstore</h1>", unsafe_allow_html=True)

@@ -85,4 +85,50 @@ with col1:
 
 # Cuong
 with col2:
-    pass
+    sales_by_category = df.groupby('Category')['Sales'].sum().reset_index()
+    sales_by_category = sales_by_category.sort_values('Sales', ascending=False)
+    
+    st.write("**Product Categories:**")
+    category_cols = st.columns(len(sales_by_category))
+    selected_categories = []
+    
+    for idx, category in enumerate(sales_by_category['Category'].unique()):
+        with category_cols[idx]:
+            if st.checkbox(category, value=True, key=f"cat_{category}"):
+                selected_categories.append(category)
+    
+    # filter 
+    filtered_sales = sales_by_category[sales_by_category['Category'].isin(selected_categories)]
+    
+    # sale distribution 
+    if len(filtered_sales) > 0:
+        colors_palette = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b']
+        
+        fig = go.Figure(
+            data=go.Pie(
+                labels=filtered_sales['Category'],
+                values=filtered_sales['Sales'],
+                hole=0.4,
+                marker=dict(colors=colors_palette[:len(filtered_sales)]),
+                textinfo='label+percent',
+                textposition='auto',
+                hovertemplate='<b>%{label}</b><br>Sales: $%{value:,.2f}<br>Percentage: %{percent}<extra></extra>'
+            )
+        )
+        
+        fig.update_layout(
+            height=350,
+            margin=dict(l=40, r=40, t=40, b=40),
+            showlegend=True,
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=-0.2,
+                xanchor="center",
+                x=0.5
+            )
+        )
+        
+        st.plotly_chart(fig, use_container_width=True)
+    else:
+        st.warning("No categories selected!")

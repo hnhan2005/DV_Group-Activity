@@ -39,51 +39,54 @@ with col1:
     start_date = pd.to_datetime(start_date)
     end_date = pd.to_datetime(end_date)
     
-    profit_by_date = df[(df['Order Date'] >= start_date) & (df['Order Date'] <= end_date)]
-    
-    profit_by_region = profit_by_date.groupby('Region')['Profit'].sum().reset_index()
-    profit_by_region = profit_by_region.sort_values('Profit', ascending=False)
-    
-    st.write("**Regions:**")
-    region_cols = st.columns(len(profit_by_region))
-    selected_regions = []
-    
-    for idx, region in enumerate(profit_by_region['Region'].unique()):
-        with region_cols[idx]:
-            if st.checkbox(region, value=True):
-                selected_regions.append(region)
-    
-    # Filter region
-    filtered_profit = profit_by_region[profit_by_region['Region'].isin(selected_regions)]
-    
-    # The most profitable region
-    if len(filtered_profit) > 0:
-        max_profit_region = filtered_profit.loc[filtered_profit['Profit'].idxmax(), 'Region']
+    if start_date <= end_date:
+        profit_by_date = df[(df['Order Date'] >= start_date) & (df['Order Date'] <= end_date)]
         
-        colors = ['#D32F2F' if region == max_profit_region else '#D3D3D3' 
-                  for region in filtered_profit['Region']]
+        profit_by_region = profit_by_date.groupby('Region')['Profit'].sum().reset_index()
+        profit_by_region = profit_by_region.sort_values('Profit', ascending=False)
         
-        fig = go.Figure(
-            data=go.Bar(
-                x=filtered_profit['Region'],
-                y=filtered_profit['Profit'],
-                marker=dict(color=colors),
-                text=filtered_profit['Profit'].round(2),
-                textposition='outside'
+        st.write("**Regions:**")
+        region_cols = st.columns(len(profit_by_region))
+        selected_regions = []
+        
+        for idx, region in enumerate(profit_by_region['Region'].unique()):
+            with region_cols[idx]:
+                if st.checkbox(region, value=True):
+                    selected_regions.append(region)
+        
+        # Filter region
+        filtered_profit = profit_by_region[profit_by_region['Region'].isin(selected_regions)]
+        
+        # The most profitable region
+        if len(filtered_profit) > 0:
+            max_profit_region = filtered_profit.loc[filtered_profit['Profit'].idxmax(), 'Region']
+            
+            colors = ['#D32F2F' if region == max_profit_region else '#D3D3D3' 
+                    for region in filtered_profit['Region']]
+            
+            fig = go.Figure(
+                data=go.Bar(
+                    x=filtered_profit['Region'],
+                    y=filtered_profit['Profit'],
+                    marker=dict(color=colors),
+                    text=filtered_profit['Profit'].round(2),
+                    textposition='outside'
+                )
             )
-        )
-        
-        fig.update_layout(
-            xaxis_title="Region",
-            yaxis_title="Profit ($)",
-            hovermode='x unified',
-            height=400,
-            margin=dict(l=50, r=50, t=30, b=50)
-        )
-        
-        st.plotly_chart(fig, width="stretch")
+            
+            fig.update_layout(
+                xaxis_title="Region",
+                yaxis_title="Profit ($)",
+                hovermode='x unified',
+                height=400,
+                margin=dict(l=50, r=50, t=30, b=50)
+            )
+            
+            st.plotly_chart(fig, width="stretch")
+        else:
+            st.warning("No regions selected!")
     else:
-        st.warning("No regions selected!")
+        st.warning("Start date must be before end date!")
 
 # Cuong
 with col2:

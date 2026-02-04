@@ -28,4 +28,25 @@ st.success("""
 Vùng South và Central cần cải thiện lợi nhuận bằng cách phân tích nguyên nhân lợi nhuận thấp, xem xét điều chỉnh giá, chi phí vận chuyển hoặc marketing, và tìm hiểu đặc điểm khách hàng cùng nhu cầu thị trường địa phương. 
 Đồng thời, nên duy trì và tập trung phát triển thêm ở hai thị trường lớn nhất.
 """)
-  
+
+# pie chart
+st.header("Phân Tích Doanh Thu Theo Danh Mục Sản Phẩm")
+
+st.info("""
+Các danh mục được phân tích: Technology, Furniture, Office Supplies
+""")
+
+st.markdown("""
+    **1. Các mặt hàng công nghệ (Technology) đạt doanh thu cao nhất:** Doanh thu đạt được là **$836,154.03**, chiếm khoảng **36.4%** tổng doanh thu toàn hệ thống. Đây là nhóm hàng mang lại dòng tiền lớn nhất.
+
+    **2. Sản phẩm nội thất (Furniture) đứng thứ hai:** Doanh thu đạt **$741,999.80**, chiếm **32.3%**.
+    
+    **3. Văn phòng phẩm (Office Supplies):** Đạt **$719,047**, chiếm **31.3%** và gần bằng doanh thu của Furniture. Chênh lệch doanh thu khi so với nhóm cao nhất (Technology) là không quá lớn (với doanh thu của Technology gấp **1.16 lần**).
+""")
+
+st.success("""
+**Nhận xét:** Cơ cấu doanh thu giữa 3 nhóm ngành hàng khá cân bằng (đều xoay quanh mức 31-36%). Điều này cho thấy sự ổn định về doanh thu của đa dạng sản phẩm trong hệ thống khi không bị quá phụ thuộc vào một nhóm ngành hàng nào.
+* **Technology:** Là mặt hàng chủ chốt của hệ thống Superstore, cần ưu tiên quảng bá cho các sản phẩm công nghệ mới cũng như đẩy mạnh các chương trình ưu đãi để duy trì vị thế dẫn đầu.
+* **Furniture:** Doanh thu tốt nhưng cần kiểm soát chặt lợi nhuận vì rủi ro về chi phí vận chuyển cao, có thể mang lại lợi nhuận thấp hoặc âm.
+* **Office Supplies:** Tuy doanh thu ít nhất nhưng đây là sản phẩm thiết yếu với nhu cầu mua sắm thường xuyên, nên có thể triển khai các chiến lược bán theo combo thay vì bán lẻ để tăng giá trị doanh thu.
+""")

@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 
+st.set_page_config(page_title="Group Activity", layout="wide", initial_sidebar_state="collapsed")
+
 st.markdown("""
 <style>
     .block-container {
@@ -20,7 +22,7 @@ df = pd.read_csv('superstore.csv', encoding='latin1')
 
 df['Order Date'] = pd.to_datetime(df['Order Date'], format='%m/%d/%Y')
 
-st.set_page_config(page_title="Group Activity", layout="wide", initial_sidebar_state="collapsed")
+
 st.markdown("<h1 style='text-align: center;'>Group Activity - Superstore</h1>", unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
@@ -79,7 +81,7 @@ with col1:
             margin=dict(l=50, r=50, t=30, b=50)
         )
         
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
     else:
         st.warning("No regions selected!")
 
@@ -129,6 +131,6 @@ with col2:
             )
         )
         
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, width="stretch")
     else:
         st.warning("No categories selected!")

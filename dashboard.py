@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 
-st.set_page_config(page_title="Group Activity", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Hoạt động nhóm", layout="wide", initial_sidebar_state="collapsed")
 
 st.markdown("""
 <style>
@@ -23,7 +23,7 @@ df = pd.read_csv('superstore.csv', encoding='latin1')
 df['Order Date'] = pd.to_datetime(df['Order Date'], format='%m/%d/%Y')
 
 
-st.markdown("<h1 style='text-align: center;'>Group Activity - Superstore</h1>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align: center;'>Hoạt động nhóm - Superstore</h1>", unsafe_allow_html=True)
 
 col1, _, col2 = st.columns([1, 0.1, 1])
 
@@ -31,10 +31,10 @@ with col1:
     # Filter date
     date_col1, date_col2 = st.columns(2)
     with date_col1:
-        start_date = st.date_input("**Start date**", value=df['Order Date'].min(), min_value=df['Order Date'].min(), max_value=df['Order Date'].max())
+        start_date = st.date_input("**Ngày bắt đầu**", value=df['Order Date'].min(), min_value=df['Order Date'].min(), max_value=df['Order Date'].max())
     
     with date_col2:
-        end_date = st.date_input("**End date**", value=df['Order Date'].max(), min_value=df['Order Date'].min(), max_value=df['Order Date'].max())
+        end_date = st.date_input("**Ngày kết thúc**", value=df['Order Date'].max(), min_value=df['Order Date'].min(), max_value=df['Order Date'].max())
     
     start_date = pd.to_datetime(start_date)
     end_date = pd.to_datetime(end_date)
@@ -45,7 +45,7 @@ with col1:
         profit_by_region = profit_by_date.groupby('Region')['Profit'].sum().reset_index()
         profit_by_region = profit_by_region.sort_values('Profit', ascending=False)
         
-        st.write("**Regions:**")
+        st.write("**Khu vực:**")
         region_cols = st.columns(len(profit_by_region))
         selected_regions = []
         
@@ -75,25 +75,31 @@ with col1:
             )
             
             fig.update_layout(
-                xaxis_title="Region",
-                yaxis_title="Profit ($)",
+                title=dict(
+                    text="Lợi nhuận theo khu vực",
+                    x=0.5,
+                    xanchor='center',
+                ),
+                yaxis=dict(range=[0, 120000]),
+                xaxis_title="Khu vực",
+                yaxis_title="Lợi nhuận ($)",
                 hovermode='x unified',
                 height=400,
-                margin=dict(l=50, r=50, t=30, b=50)
+                margin=dict(l=50, r=50, t=80, b=50)
             )
             
             st.plotly_chart(fig, width="stretch")
         else:
-            st.warning("No regions selected!")
+            st.warning("Chưa chọn khu vực nào!")
     else:
-        st.warning("Start date must be before end date!")
+        st.warning("Ngày bắt đầu phải trước ngày kết thúc!")
 
 # Cuong
 with col2:
     sales_by_category = df.groupby('Category')['Sales'].sum().reset_index()
     sales_by_category = sales_by_category.sort_values('Sales', ascending=False)
     
-    st.write("**Product Categories:**")
+    st.write("**Danh mục sản phẩm:**")
     category_cols = st.columns(len(sales_by_category))
     selected_categories = []
     
@@ -117,13 +123,18 @@ with col2:
                 marker=dict(colors=colors_palette[:len(filtered_sales)]),
                 textinfo='label+percent',
                 textposition='auto',
-                hovertemplate='<b>%{label}</b><br>Sales: $%{value:,.2f}<br>Percentage: %{percent}<extra></extra>'
+                hovertemplate='<b>%{label}</b><br>Doanh thu: $%{value:,.2f}<br>Phần trăm: %{percent}<extra></extra>'
             )
         )
         
         fig.update_layout(
-            height=350,
-            margin=dict(l=40, r=40, t=40, b=40),
+            title=dict(
+                text="Phân bố Doanh thu theo danh mục",
+                x=0.5,
+                xanchor='center'
+            ),
+            height=400,
+            margin=dict(l=40, r=40, t=60, b=40),
             showlegend=True,
             legend=dict(
                 orientation="h",
@@ -136,4 +147,4 @@ with col2:
         
         st.plotly_chart(fig, width="stretch")
     else:
-        st.warning("No categories selected!")
+        st.warning("Chưa chọn danh mục nào!")

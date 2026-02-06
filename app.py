@@ -1,7 +1,7 @@
 import streamlit as st
 
 tab_dashboard = st.Page("dashboard.py", title="Dashboard", icon="📊")
-tab_comment = st.Page("comment.py", title="Comments", icon="✍️")
+tab_comment = st.Page("comment.py", title="Nhận xét", icon="✍️")
 
 pg = st.navigation([tab_dashboard, tab_comment])
 

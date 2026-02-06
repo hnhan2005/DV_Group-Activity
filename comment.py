@@ -1,6 +1,8 @@
 import streamlit as st
 
-st.header("Phân Tích Lợi Nhuận Theo Vùng")
+st.set_page_config(page_title="Group Activity", layout="wide", initial_sidebar_state="collapsed")
+
+st.header("Phân tích lợi nhuận theo vùng")
 
 st.info("""
 Thời gian: 03/01/2014 - 30/12/2017  
@@ -30,7 +32,7 @@ Vùng South và Central cần cải thiện lợi nhuận bằng cách phân tí
 """)
 
 # pie chart
-st.header("Phân Tích Doanh Thu Theo Danh Mục Sản Phẩm")
+st.header("Phân tích doanh thu theo danh mục sản phẩm")
 
 st.info("""
 Các danh mục được phân tích: Technology, Furniture, Office Supplies

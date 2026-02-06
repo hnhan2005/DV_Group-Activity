@@ -25,7 +25,7 @@ df['Order Date'] = pd.to_datetime(df['Order Date'], format='%m/%d/%Y')
 
 st.markdown("<h1 style='text-align: center;'>Group Activity - Superstore</h1>", unsafe_allow_html=True)
 
-col1, col2 = st.columns(2)
+col1, _, col2 = st.columns([1, 0.1, 1])
 
 with col1:
     # Filter date
